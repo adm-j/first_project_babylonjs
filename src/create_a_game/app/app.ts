@@ -4,6 +4,7 @@ import "@babylonjs/loaders/glTF";
 import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder, FreeCamera, Color4, Matrix, Quaternion, StandardMaterial, Color3, PointLight, ShadowGenerator } from "@babylonjs/core";
 import { AdvancedDynamicTexture, Button, Control } from "@babylonjs/gui";
 import { Player } from "../characterController/characterController";
+import { Environment } from "../environment/environment";
 
 enum State { START = 0, GAME = 1, LOSE = 2, CUTSCENE = 3 }
 
@@ -33,7 +34,7 @@ class App {
         // hide/show the Inspector
         window.addEventListener("keydown", (ev) => {
             // Shift+Ctrl+Alt+I
-            if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) {
+            if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.key === "I") {
                 if (this._scene.debugLayer.isVisible()) {
                     this._scene.debugLayer.hide();
                 } else {
@@ -207,7 +208,7 @@ class App {
         //dont detect any inputs from this ui while the game is loading
         this._scene.detachControl();
         this._cutScene = new Scene(this._engine);
-        let camera = new FreeCamera("camera1", new Vector3(0, 0, 0), this._cutScene);
+        let camera = new FreeCamera("camera1", new Vector3(0, 4, 0), this._cutScene);
         camera.setTarget(Vector3.Zero());
         this._cutScene.clearColor = new Color4(0, 0, 0, 1);
 
@@ -249,6 +250,11 @@ class App {
         this._gamescene = scene;
 
         //...load assets
+
+        //create environment
+        const environment = new Environment(scene);
+        this.environment = environment;
+        await this.environment.load();
 
         await this._loadCharacterAssets(scene);
     }

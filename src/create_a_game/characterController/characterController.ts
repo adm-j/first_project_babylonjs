@@ -8,6 +8,10 @@ export class Player extends TransformNode {
     //player
     public mesh: Mesh; //outer collishbox for oplayer
 
+    private _setupPlayerCamera() {
+        var camera4 = new ArcRotateCamera("arc", -Math.PI / 2, Math.PI / 2, 40, new Vector3(0, 3, 0), this._scene);
+    }
+
     constructor(assets, scene: Scene, shadowGenerator: ShadowGenerator, input?) {
         super("player", scene);
         this.scene = scene;
@@ -20,7 +24,5 @@ export class Player extends TransformNode {
 
         this._input = input; //inputs from inputController.ts
     }
-    private _setupPlayerCamera() {
-        var camera4 = new ArcRotateCamera("arc", -Math.PI / 2, Math.PI / 2, 40, new Vector3(0, 3, 0), this._scene);
-    }
+
 }
